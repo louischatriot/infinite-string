@@ -1,28 +1,75 @@
 
 
 
+def get_position(n, offset):
+    # TODO: actually implement it
+    return n
+
+
+
+
 # Length of num is between 2 and 15 so we can never span three domains
 def findPosition(num):
     N = len(num)
 
     pos = []
 
+    print(num)
+
+    # ns is number size, ad is actual digits in the beginning of num
+    for ns in range(1, N+1):
+        for ad in range(1, ns+1):
+            # Full number at the start of num
+            if ns == ad:
+                okay = True
+
+                start = int(num[0:ns])
+
+                for j in range(1, N // ns):
+                    number = int(num[j * ns:(j+1) * ns])
+                    if number != start + j:
+                        okay = False
+                        break
+
+                if N % ns != 0:
+                    last = num[ns * (N // ns):]
+                    end = start + (N // ns)
+                    end = str(end)[0:len(last)]
+
+                    if end != last:
+                        okay = False
+
+                if okay:
+                    get_position(start, 0)
+
+
+
     # s is the size of the first full number (if any)
     # l the size of the incomplete left hand number
     # r the size of the incomplete right hand number
-    for s in range(1, N + 1):
-        # Case when we span only one domain
-        for l in range(0, s):
-            for r in range(0, s):
-                full = N - l - r
-                if full % s != 0:
-                    continue
-                pos.append([l] + ([s] * (full // s)) + [r])
+
+    # Case when we span only one domain
+    # for s in range(1, N + 1):
+        # for l in range(0, s):
+            # for r in range(0, s):
+                # full = N - l - r
+                # if full % s != 0:
+                    # continue
+                # pos.append([l] + ([s] * (full // s)) + [r])
+
+    # # Case when we span two domains
+    # for s1 in range(1, N - 1):
+        # s2 = s1 + 1
+
+        # pass
+
+    # # Actually unsure about this way of splitting
 
 
 
-    for p in pos:
-        print(p)
+
+    # for p in pos:
+        # print(p)
 
 
 
