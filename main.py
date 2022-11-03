@@ -1,11 +1,15 @@
 
 
 
-def get_position(n, offset):
-    # TODO: actually implement it
-    return n
+def get_position(n, offset=0):
+    res = 0
+    N = len(str(n))
 
+    for i in range(0, N-1):
+        res += (10 ** (i+1) - 10 ** i) * (i+1)
 
+    res += N * (n - 10 ** (N-1))
+    return res + offset
 
 
 # Length of num is between 2 and 15 so we can never span three domains
@@ -34,42 +38,31 @@ def findPosition(num):
                 if N % ns != 0:
                     last = num[ns * (N // ns):]
                     end = start + (N // ns)
-                    end = str(end)[0:len(last)]
+                    end_s = str(end)[0:len(last)]
 
-                    if end != last:
+                    if end_s != last:
                         okay = False
 
                 if okay:
                     get_position(start, 0)
 
+                continue
 
+            # Case where we only have the last ad digits of the first number
+            # Maybe the same as the previous one actually
+            okay = True
 
-    # s is the size of the first full number (if any)
-    # l the size of the incomplete left hand number
-    # r the size of the incomplete right hand number
+            start_s = num[0:ad]
+            next_s = num[ad:ad+ns]
 
-    # Case when we span only one domain
-    # for s in range(1, N + 1):
-        # for l in range(0, s):
-            # for r in range(0, s):
-                # full = N - l - r
-                # if full % s != 0:
-                    # continue
-                # pos.append([l] + ([s] * (full // s)) + [r])
-
-    # # Case when we span two domains
-    # for s1 in range(1, N - 1):
-        # s2 = s1 + 1
-
-        # pass
-
-    # # Actually unsure about this way of splitting
+            # We have a full number after the first incomplete one
+            if len(next_s) == ns:
+                next = int(next_s)
+                if str(next - 1)[ns-ad:] != start_s:
+                    pass
 
 
 
-
-    # for p in pos:
-        # print(p)
 
 
 
