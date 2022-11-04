@@ -11,6 +11,25 @@ def get_position(n, offset=0):
     res += N * (n - 10 ** (N-1))
     return res + offset
 
+# n is a full number (not a part of the left most number)
+def is_compatible(n, s):
+    i = 0
+    while i < len(s):
+        n_s = str(n)
+
+        if len(s) - i < len(n_s):
+            n_s = n_s[0:len(s)-i]
+            if n_s != s[i:]:
+                return False
+        else:
+            if s[i:i+len(n_s)] != n_s:
+                return False
+
+        i += len(n_s)
+        n += 1
+
+    return True
+
 
 # Length of num is between 2 and 15 so we can never span three domains
 def findPosition(num):
