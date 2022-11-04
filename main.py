@@ -31,6 +31,8 @@ def is_compatible(n, s):
     return True
 
 
+
+
 # Length of num is between 2 and 15 so we can never span three domains
 def findPosition(num):
     N = len(num)
@@ -39,9 +41,60 @@ def findPosition(num):
 
     print(num)
 
+
     # ns is number size, ad is actual digits in the beginning of num
     for ns in range(1, N+1):
         for ad in range(1, ns+1):
+            first_s = num[0:ad]
+
+
+            if ns == ad:
+                if first_s[0] != "0":
+                    pos.append((int(first_s), num))
+
+                continue
+
+            if num[ad] == "0":
+                continue
+
+            if first_s == '9' * ad:
+                missing = ns-ad
+                next_s_beg = num[ad:ad+missing]
+
+                # We have at most one possibility (and maybe 0, will be checked by the compatibility function)
+                if len(next_s_beg) == missing:
+                    if next_s_beg == '1' + '0' * (missing - 1):
+                        next_s = '1' + '0' * ns
+                    else:
+                        next_s = next_s_beg + '0' * ad
+
+                # We have more than one possibility
+                else:
+                    next_s = next_s_beg + '0' * (ns-len(next_s_beg))
+
+                pos.append((int(next_s), num[ad:]))
+                continue
+
+
+
+
+                1/0
+
+
+                next_s = num[ad:ad+ns+1]
+                correct_next = int(first_s) + 1
+                if next_s == str(correct_next)[0:len(next_s)]:
+                    pos.append((correct_next, num[ad:]))
+
+
+
+
+
+                continue
+
+
+
+
             # Full number at the start of num
             if ns == ad:
                 okay = True
