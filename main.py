@@ -1,7 +1,7 @@
 
 
 
-def get_position(n, offset=0):
+def get_position(n):
     res = 0
     N = len(str(n))
 
@@ -9,7 +9,7 @@ def get_position(n, offset=0):
         res += (10 ** (i+1) - 10 ** i) * (i+1)
 
     res += N * (n - 10 ** (N-1))
-    return res + offset
+    return res
 
 # n is a full number (not a part of the left most number)
 def is_compatible(n, s):
@@ -36,28 +36,25 @@ def is_compatible(n, s):
 # Length of num is between 2 and 15 so we can never span three domains
 def findPosition(num):
     N = len(num)
-
     pos = []
-
-    print(num)
-
 
     # ns is number size, ad is actual digits in the beginning of num
     for ns in range(1, N+1):
         for ad in range(1, ns+1):
-            first_s = num[0:ad]
+            first_s_end = num[0:ad]
 
 
             if ns == ad:
+                first_s = first_s_end
                 if first_s[0] != "0":
-                    pos.append((int(first_s), num))
+                    pos.append((int(first_s), num, 0))
 
                 continue
 
             if num[ad] == "0":
                 continue
 
-            if first_s == '9' * ad:
+            if first_s_end == '9' * ad:
                 missing = ns-ad
                 next_s_beg = num[ad:ad+missing]
 
@@ -72,84 +69,32 @@ def findPosition(num):
                 else:
                     next_s = next_s_beg + '0' * (ns-len(next_s_beg))
 
-                pos.append((int(next_s), num[ad:]))
+                pos.append((int(next_s), num[ad:], ad))
                 continue
 
+            # first_s_end is not only nines
+            missing = ns-ad
+            next_s_beg = num[ad:ad+missing]
 
+            if len(next_s_beg) == missing:
+                first_s = next_s_beg + first_s_end
+                next = int(first_s) + 1
+            else:
+                first_s = next_s_beg + '0' * (missing - len(next_s_beg)) + first_s_end
+                next = int(first_s) + 1
 
+            pos.append((next, num[ad:], ad))
 
-                1/0
+    res = int(num) + 1
+    for n, s, offset in pos:
+        if is_compatible(n, s):
+            res = min(res, get_position(n) - offset)
 
-
-                next_s = num[ad:ad+ns+1]
-                correct_next = int(first_s) + 1
-                if next_s == str(correct_next)[0:len(next_s)]:
-                    pos.append((correct_next, num[ad:]))
-
-
-
-
-
-                continue
-
-
-
-
-            # Full number at the start of num
-            if ns == ad:
-                okay = True
-
-                start = int(num[0:ns])
-
-                for j in range(1, N // ns):
-                    number = int(num[j * ns:(j+1) * ns])
-                    if number != start + j:
-                        okay = False
-                        break
-
-                if N % ns != 0:
-                    last = num[ns * (N // ns):]
-                    end = start + (N // ns)
-                    end_s = str(end)[0:len(last)]
-
-                    if end_s != last:
-                        okay = False
-
-                if okay:
-                    get_position(start, 0)
-
-                continue
-
-            # Case where we only have the last ad digits of the first number
-            # Maybe the same as the previous one actually
-            okay = True
-
-            start_s = num[0:ad]
-            next_s = num[ad:ad+ns]
-
-            # We have a full number after the first incomplete one
-            if len(next_s) == ns:
-                next = int(next_s)
-                if str(next - 1)[ns-ad:] != start_s:
-                    pass
+    return res
 
 
 
 
-
-
-    return 0
-
-
-
-
-findPosition("1234567890")
-
-
-
-
-
-1/0
 
 
 
