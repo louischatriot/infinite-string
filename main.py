@@ -38,8 +38,6 @@ def find_position(num):
     N = len(num)
     pos = []
 
-    log(num)
-
     if num == '0' * N:
         return get_position(int('1' + num)) + 1
 
@@ -63,16 +61,10 @@ def find_position(num):
                 missing = ns-ad
                 next_s_beg = num[ad:ad+missing]
 
-                # We have at most one possibility (and maybe 0, will be checked by the compatibility function)
-                if len(next_s_beg) == missing:
-                    if next_s_beg == '1' + '0' * (missing - 1):
-                        next_s = '1' + '0' * ns
-                    else:
-                        next_s = next_s_beg + '0' * ad
-
-                # We have more than one possibility
+                if len(next_s_beg) == missing and next_s_beg == '1' + '0' * (missing - 1):
+                    next_s = '1' + '0' * ns
                 else:
-                    next_s = next_s_beg + '0' * (ns-len(next_s_beg))
+                    next_s = next_s_beg + '0' * ad
 
                 pos.append((int(next_s), num[ad:], ad))
                 continue
