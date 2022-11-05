@@ -1,5 +1,8 @@
+logging = False
 
-
+def log(s):
+    if logging:
+        print(s)
 
 def get_position(n):
     res = 0
@@ -30,19 +33,21 @@ def is_compatible(n, s):
 
     return True
 
-
-
-
 # Length of num is between 2 and 15 so we can never span three domains
-def findPosition(num):
+def find_position(num):
     N = len(num)
     pos = []
+
+    log(num)
+
+    if num == '0' * N:
+        return get_position(int('1' + num)) + 1
+
 
     # ns is number size, ad is actual digits in the beginning of num
     for ns in range(1, N+1):
         for ad in range(1, ns+1):
             first_s_end = num[0:ad]
-
 
             if ns == ad:
                 first_s = first_s_end
@@ -85,7 +90,7 @@ def findPosition(num):
 
             pos.append((next, num[ad:], ad))
 
-    res = int(num) + 1
+    res = 1e30 + int(num)
     for n, s, offset in pos:
         if is_compatible(n, s):
             res = min(res, get_position(n) - offset)
@@ -99,6 +104,8 @@ def findPosition(num):
 
 
 tests = [
+    ("00", 190),
+    ("040", 1091),
     ("456", 3),
     ("454", 79),
     ("455", 98),
@@ -114,7 +121,7 @@ tests = [
 
 
 for num, correct in tests:
-    res = findPosition(num)
+    res = find_position(num)
     if res != correct:
         print(f"ERROR - for {num} - found {res} - correct answer {correct}")
 
