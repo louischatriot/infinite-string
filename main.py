@@ -80,13 +80,8 @@ def find_position(num):
             # first_s_end is not only nines
             missing = ns-ad
             next_s_beg = num[ad:ad+missing]
-
-            if len(next_s_beg) == missing:
-                first_s = next_s_beg + first_s_end
-                next = int(first_s) + 1
-            else:
-                first_s = next_s_beg + '0' * (missing - len(next_s_beg)) + first_s_end
-                next = int(first_s) + 1
+            first_s = next_s_beg + '0' * (missing - len(next_s_beg)) + first_s_end
+            next = int(first_s) + 1
 
             pos.append((next, num[ad:], ad))
 
